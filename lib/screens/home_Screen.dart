@@ -1,4 +1,3 @@
-
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -143,7 +142,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.only(top: 40, left: 20),
                       child: Row(
                         children: [
-
                           Expanded(
                             child: Container(),
                           ),
@@ -368,7 +366,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                     //NASH
                     Container(
-                      height: 300,
+                      height: 700,
                       width: double.maxFinite,
                       margin: const EdgeInsets.only(left: 20),
                       child: ListView.builder(
@@ -478,11 +476,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               );
                               //other condition
                             } else {
-
-                             
                               print(documentSnapshot[index]);
-                              if (_activeChips
-                                  .contains(documentSnapshot['category'])) {
+                              if (index < snapshot.data!.docs.length &&
+                                  _activeChips
+                                      .contains(documentSnapshot['category'])) {
                                 return Column(
                                   children: [
                                     Container(
@@ -500,9 +497,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                                 documentSnapshot['image']),
                                             fit: BoxFit.cover),
                                       ),
-                                      
                                     ),
-                                  
                                   ],
                                 );
                               } else {

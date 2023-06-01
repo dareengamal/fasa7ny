@@ -1,4 +1,3 @@
-
 // // import 'package:fasa7ny/screens/favorite.dart';
 // // import 'package:fasa7ny/screens/profile.dart';
 // // import 'package:flutter/material.dart';
@@ -221,6 +220,7 @@ import 'package:fasa7ny/screens/profile.dart';
 import 'package:fasa7ny/screens/postScreen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart'; // Import the PostScreen
+import 'package:firebase_auth/firebase_auth.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int currentIndex;
@@ -248,10 +248,38 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   void navigateToFavouriteScreen(BuildContext context) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => FavoriteScreen()),
-    );
+    FirebaseAuth auth = FirebaseAuth.instance;
+    dynamic user = auth.currentUser ?? "";
+    if (user != "") {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => FavoriteScreen()),
+      );
+    } else {
+      AlertDialog alert = AlertDialog(
+        title: Text("Warning", style: TextStyle(color: Colors.black)),
+        content: Text(
+          "You have to sign in first",
+          style: TextStyle(color: Colors.black),
+        ),
+        actions: [
+          TextButton(
+            child: Text('OK'),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+
+      // show the dialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        },
+      );
+    }
   }
 
   void navigateToAddPostScreen(BuildContext context) {
@@ -276,7 +304,8 @@ class _BottomNavBarState extends State<BottomNavBar> {
           widget.onTap(index);
         }
       },
-      backgroundColor: widget.isDarkMode ? Colors.grey[900] : widget.backgroundColor,
+      backgroundColor:
+          widget.isDarkMode ? Colors.grey[900] : widget.backgroundColor,
       selectedItemColor: widget.isDarkMode ? Colors.white : Colors.black,
       unselectedItemColor: widget.isDarkMode ? Colors.grey : Colors.grey[600],
       items: const [
